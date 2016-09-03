@@ -1,0 +1,11 @@
+System lib:
+python-dev (for building psycopg2)
+postgresql-server-dev-X.Y (for building psycopg2)
+
+Python lib:
+isoweek
+xlwt
+south
+psycopg2
+Pillow-2.5.3
+python-memcached

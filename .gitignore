@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# local files
+local_settings.py
+settings.py
+celerybeat-schedule
+schedule-bmdp
+
+# staticfile
+media/*
+static/bootstrap302/*
+db.sqlite3
+*.log
+*.csv
