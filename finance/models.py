@@ -89,8 +89,8 @@ class Goods(models.Model):
     # nedd for add invite for client without contract
     single_visit = models.SmallIntegerField(default=0)
     # for pay freeze
-    is_pay_freeze = models.BooleanField(default=False, blank=True)
-    pay_days = models.SmallIntegerField(default=0, blank=True)
+    # is_pay_freeze = models.BooleanField(default=False, blank=True)
+    # pay_days = models.SmallIntegerField(default=0, blank=True)
 
     def __unicode__(self):
         return unicode(self.name)
@@ -240,7 +240,8 @@ class Credits(models.Model):
     def escape(self):
         if self.goods:
             is_not_sys = self.goods.goods_type.name not in SYS_GOODS
-            if not_sys_goods and not self.goods.is_pay_freeze:
+            # if not_sys_goods and not self.goods.is_pay_freeze:
+            if not_sys_goods:
                 cnt = self.count
                 invoice = InvoiceGoods.objects.filter(goods=self.goods)
                 for ig in IssuanceGoods.objects.filter(
@@ -261,11 +262,13 @@ class Credits(models.Model):
         if self.goods:
             is_not_sys = self.goods.goods_type.name not in SYS_GOODS
             enough = self.goods.on_market() > self.count
-            if is_not_sys and not self.goods.is_pay_freeze and not enough:
+            # if is_not_sys and not self.goods.is_pay_freeze and not enough:
+            if is_not_sys and not enough:
                 msg = u'%s is too big max: %s' % (
                     self.count, self.goods.on_market())
                 raise ValidationError(msg)
-            elif is_not_sys and not self.goods.is_pay_freeze:
+            # elif is_not_sys and not self.goods.is_pay_freeze:
+            elif is_not_sys:
                 cnt = self.count
                 invoice = InvoiceGoods.objects.filter(goods=self.goods)
                 for ig in IssuanceGoods.objects.filter(
@@ -494,16 +497,16 @@ class CreditsHistory(models.Model):
                             ig.save()
                             break
         elif self.contract:
-            if self.goods and self.goods.is_pay_freeze:
-                pass
-            else:
-                cr = Credits(
-                    user=self.user, amount=self.amount, plan_date=self.plan_date,
-                    goods=self.goods, count=self.count, contract=self.contract,
-                    client=self.client, guest=self.guest, employee=self.employee,
-                    ptt_card=self.ptt_card, payment_user=user,
-                    payment_type=payment_type, department=self.department)
-                cr.save()
+            # if self.goods and self.goods.is_pay_freeze:
+            #     pass
+            # else:
+            cr = Credits(
+                user=self.user, amount=self.amount, plan_date=self.plan_date,
+                goods=self.goods, count=self.count, contract=self.contract,
+                client=self.client, guest=self.guest, employee=self.employee,
+                ptt_card=self.ptt_card, payment_user=user,
+                payment_type=payment_type, department=self.department)
+            cr.save()
         self.is_return = 1
         self.amount = 0
         self.save()

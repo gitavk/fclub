@@ -226,7 +226,8 @@ def contract_pay_freeze(request, cntr_id=0):
         else:
             return HttpResponse(cf.errors, mimetype="text/plain")
     freeze = Freeze.objects.filter(contract=contract).order_by('date_start')
-    pay_freezes = Goods.objects.filter(is_pay_freeze=True)
+    # pay_freezes = Goods.objects.filter(is_pay_freeze=True)
+    pay_freezes = Goods.objects.filter(pk=0)
     context_dict = dict(
         request=request, contract=contract, freeze=freeze, res=res,
         pay_freezes=pay_freezes)

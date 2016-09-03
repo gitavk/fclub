@@ -191,9 +191,9 @@ class Contract(models.Model):
         period_freeze = self.contract_type.period_freeze
         # find payment freeze
         chs = self.creditshistory_set.exclude(goods__isnull=True)
-        for ch in chs:
-            if ch.goods.is_pay_freeze:
-                period_freeze += ch.goods.pay_days
+        # for ch in chs:
+        #     if ch.goods.is_pay_freeze:
+        #         period_freeze += ch.goods.pay_days
         return period_freeze - freeze_sum
 
     def is_freeze(self):
