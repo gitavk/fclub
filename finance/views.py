@@ -25,7 +25,7 @@ departments = settings.DEPARTMENTS
 # not true goods type
 excl_gt = GoodsType.objects.filter(name__in=['PTT'])
 # excl_g = Goods.objects.filter(goods_type__in=excl_gt, is_pay_freeze=True)
-excl_g = Goods.objects.filter(goods_type__in=excl_gt
+excl_g = Goods.objects.filter(goods_type__in=excl_gt)
 
 @login_required(login_url='/login')
 def ptt_trainer(request):
