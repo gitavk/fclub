@@ -595,80 +595,26 @@ $( document ).on( "click",'#cash', function(){
 	} else {
 		cht = '2'
 	};
-	// check cash status
-	var status = 0
-	curl = 'http://{{ cashhost }}:8000/cgi-bin/check.py'
-	$.when(
-	    $.ajax({
-	        url: encodeURI(curl),
-	        crossDomain: true,
-	        timeout: 10000,
-	        cache: false,
-	        async: false,
-	        dataType: 'jsonp',
-	        success: function (data) {
-	            status = parseInt(data['res'], 10)
-	        },
-	    })
-    ).then(function() {
-        if ( [4, 2].indexOf(status) < 0 ){
+    var crurl = '{% url "close_credit" %}'
+	$.ajax({
+		url: crurl,
+		cache: false,
+		async: false,
+		timeout: 10000,
+		dataType: 'json',
+		data:({crlist: sal, chtype: cht,}),
+		success: function (data) {
+			$('#cashinfo').html('<div class="alert alert-success">\
+				<h3>данные сохранены</h3>\
+			</div>')
+			$("#tabcontent input:checked").parent().parent().remove();
+			window.location.reload(true);
+		},
+		error: function(){
 			$('#cashinfo').html('<div class="alert alert-danger">\
-					<h3>Проверьте:</h3>\
-					<h3>- ленту</h3>\
-					<h3>- подключение</h3>\
-					<h3>- замятие ленты</h3>\
-					<h3>Перезапустите кассу</h3>\
-				</div>');
-			return
-        }
-		var gchecked = $("#tabcontent input:checked").get()
-		var sal = ''
-		for (var i = 0; i < gchecked.length; i++) {
-			sal += gchecked[i].name + '|'
+				<h3>ошибка базы данных</h3>\
+			</div>')
 		}
-		sal = encodeURI(sal)
-		var buyer = encodeURI('Клиент : {{ clnt|title }}');
-		var gurl = 'http://{{ cashhost }}:8000/cgi-bin/sale.py'
-		$.ajax({
-	    	url: encodeURI(gurl),
-			crossDomain: true,
-			timeout: 10000,
-			cache: false,
-			async: false,
-			data: ({sales: sal, chtype: cht, clnt:buyer}),
-			dataType: 'jsonp',
-	    	success: function (data) {
-	    		$('#cashinfo').html('<div class="alert alert-success">\
-		    							<h3>сохранение в базу</h3>\
-									</div>')
-	    	},
-	    	error: function(){
-	    		$('#cashinfo').html('<div class="alert alert-danger">\
-		    							<h3>ошибка печати чека</h3>\
-									</div>');
-	    	}
-	    });
-        var crurl = '{% url "close_credit" %}'
-		$.ajax({
-			url: crurl,
-			cache: false,
-			async: false,
-			timeout: 10000,
-			dataType: 'json',
-			data:({crlist: sal, chtype: cht,}),
-			success: function (data) {
-				$('#cashinfo').html('<div class="alert alert-success">\
-					<h3>данные сохранены</h3>\
-				</div>')
-				$("#tabcontent input:checked").parent().parent().remove();
-				window.location.reload(true);
-			},
-			error: function(){
-				$('#cashinfo').html('<div class="alert alert-danger">\
-					<h3>ошибка базы данных</h3>\
-				</div>')
-			}
-		});
 	});
 });
 
