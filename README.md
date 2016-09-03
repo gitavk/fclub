@@ -1,5 +1,3 @@
-hg push --new-branch https://3apa3ka3@bitbucket.org/3apa3ka3/fitness-manager
-
 2015/04/13
 Списание товаров.
 
