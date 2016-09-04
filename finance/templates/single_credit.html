@@ -80,6 +80,14 @@ $(document).ready(function() {
       cht = '2'
     }
     // check cash status 
+    var gchecked = $("[id=credit]").get()
+    var sal = ''
+    var glist = ''
+    for (var i = 0; i < gchecked.length; i++) {
+      sal += gchecked[i].name + '|'
+      glist += gchecked[i].value + '|'
+    }
+    sal = encodeURI(sal)
     var crurl = '{% url "close_credit" %}'
     $.ajax({
       url: crurl,
