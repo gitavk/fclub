@@ -107,7 +107,7 @@ class Goods(models.Model):
             return 0
 
     def on_market(self):
-        if self.goods_type.name in ['SERVICE', '1PTT']:
+        if self.goods_type and self.goods_type.name in ['SERVICE', '1PTT']:
             return 1
         else:
             i = InvoiceGoods.objects.filter(goods=self)
