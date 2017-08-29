@@ -140,7 +140,7 @@ class Goods(models.Model):
         prices = Price.objects.filter(
              Q(date_start__lte=date), Q(goods=self),
              (Q(date_end__isnull=True) | Q(date_end__gt=date)),
-        )[0].value
+        )
         return prices[0].value if prices else 0
 
     def price(self):
